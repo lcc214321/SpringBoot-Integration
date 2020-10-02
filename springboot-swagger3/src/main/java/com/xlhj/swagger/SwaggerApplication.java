@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @ClassName SwaggerApplication
  * @Description 启动类
  * @Author liucaijing
- * @Date 2020/9/3023:18
+ * @Date 2020/10/214:48
  * @Version 1.0
  */
 @SpringBootApplication

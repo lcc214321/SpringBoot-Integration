@@ -16,7 +16,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @ClassName SwaggerConfig
  * @Description swagger配置类
  * @Author liucaijing
- * @Date 2020/9/3023:19
+ * @Date 2020/10/214:50
  * @Version 1.0
  */
 @Configuration
