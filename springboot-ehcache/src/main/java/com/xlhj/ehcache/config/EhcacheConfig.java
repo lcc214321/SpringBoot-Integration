@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * @Author: lcj
  * @Date: 2020/10/9 11:10
- * @Description: TODO
+ * @Description: ehcache配置类
  * @Version: 0.0.1
  */
 @Configuration
@@ -25,29 +25,4 @@ public class EhcacheConfig {
         cacheManager.init();
         return cacheManager;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
