@@ -8,7 +8,8 @@ import com.xlhj.plus.entity.SysUser;
 import com.xlhj.plus.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/plus/user")
 public class SysUserController {
+
+    private static Logger logger = LoggerFactory.getLogger(SysUserController.class);
 
     @Autowired
     private SysUserService userService;
