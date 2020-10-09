@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springboot-swagger3</artifactId>
+    <artifactId>springboot-swagger</artifactId>
 
     <dependencies>
         <dependency>

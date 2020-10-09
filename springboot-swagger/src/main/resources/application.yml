@@ -2,4 +2,4 @@ server:
   port: 8081
 spring:
   application:
-    name: springboot-swagger3
+    name: springboot-swagger

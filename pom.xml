@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>springboot-mybatis-plus</module>
-        <module>springboot-swagger3</module>
+        <module>springboot-swagger</module>
         <module>springboot-ehcache</module>
         <module>springboot-redis</module>
     </modules>
