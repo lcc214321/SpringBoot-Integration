@@ -9,6 +9,7 @@
         <module>springboot-ehcache</module>
         <module>springboot-redis</module>
         <module>springboot-elasticsearch</module>
+        <module>springboot-mybatis</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
