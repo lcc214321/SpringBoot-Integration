@@ -3,3 +3,8 @@ server:
 spring:
   application:
     name: springboot-swagger
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.xlhj.swagger: debug

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8084
 
 spring:
   application:
@@ -9,6 +9,13 @@ spring:
     url: jdbc:mysql://192.168.108.11:3306/springboot?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: root
+    hikari:
+      minimum-idle: 10 #最小空闲连接，默认10
+      maximum-pool-size: 20 #最大连接数
+      idle-timeout: 600000 #空闲连接超时时间，默认600000(10分钟)
+      max-lifetime: 540000 #连接最大存活时间，默认30分钟
+      connection-timeout: 60000 #连接超时时间，默认30秒
+      connection-test-query: SELECT 1 #测试连接是否可用查询语句
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -17,4 +24,9 @@ mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-aliases-package: com.xlhj.plus.entity
+  type-aliases-package: com.xlhj.search.entity
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.xlhj.search: debug
