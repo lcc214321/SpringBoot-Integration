@@ -1,0 +1,12 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: springboot-cache
+  cache:
+    type: redis #缓存类型
+    redis:
+      time-to-live: 3600000 #存活时间(毫秒)
+      #key-prefix: CACHE_ #key前缀，默认使用缓存的名字作为前缀
+      #use-key-prefix: true #是否使用前缀
+      cache-null-values: true #是否缓存空值，防止缓存穿透

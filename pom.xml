@@ -10,6 +10,9 @@
         <module>springboot-redis</module>
         <module>springboot-elasticsearch</module>
         <module>springboot-mybatis</module>
+        <module>springboot-redisson</module>
+        <module>springboot-rabbitmq</module>
+        <module>springboot-cache</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,16 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: springboot-rabbitmq
+  rabbitmq:
+    host: 192.168.108.11
+    port: 5672
+    virtual-host: /
+    publisher-confirm-type: simple
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: auto
