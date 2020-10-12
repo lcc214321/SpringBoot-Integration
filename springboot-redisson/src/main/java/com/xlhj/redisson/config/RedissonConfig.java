@@ -5,12 +5,13 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
 /**
  * @ClassName RedissonConfig
- * @Description redisson配置类
+ * @Description redisson配置类用于加载配置文件
  * @Author liucaijing
  * @Date 2020/10/11 10:32
  * @Version 1.0
@@ -19,40 +20,14 @@ import java.io.IOException;
 public class RedissonConfig {
 
     /**
-     * 初始化Redisson客户端
+     * 创建Redisson实例
      * @return
      * @throws IOException
      */
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redisson() throws IOException {
-        Config config = new Config();
-        config.useSingleServer().setAddress("redis://192.168.108.11:6379");
-        return Redisson.create(config);
+        Config config = Config.fromYAML(new ClassPathResource("application-single.yml").getInputStream());
+        RedissonClient redisson = Redisson.create(config);
+        return redisson;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
