@@ -1,21 +1,16 @@
 package com.xlhj.redisson.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.xlhj.redisson.common.AjaxResult;
 import com.xlhj.redisson.entity.SysUser;
 import com.xlhj.redisson.service.RedissonService;
 import com.xlhj.redisson.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
 import org.redisson.api.RLock;
-import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RSemaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName SysUserController
@@ -25,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @Version 1.0
  */
 @RestController
-@RequestMapping("/redis/user")
+@RequestMapping("/redisson/user")
 public class SysUserController {
 
     private static Logger logger = LoggerFactory.getLogger(SysUserController.class);

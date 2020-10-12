@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * @ClassName RedissonConfig
- * @Description redisson配置类用于加载配置文件
+ * @Description redisson配置类
  * @Author liucaijing
  * @Date 2020/10/11 10:32
  * @Version 1.0
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class RedissonConfig {
 
     /**
-     * 创建Redisson实例
+     * 实例化Redisson客户端
      * @return
      * @throws IOException
      */
