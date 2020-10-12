@@ -1,6 +1,7 @@
 package com.xlhj.mybatis.controller;
 
 import com.xlhj.mybatis.common.AjaxResult;
+import com.xlhj.mybatis.common.Md5Utils;
 import com.xlhj.mybatis.entity.SysUser;
 import com.xlhj.mybatis.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
@@ -78,6 +79,7 @@ public class SysUserController {
     @PostMapping("/insertUser")
     @ApiOperation(value = "新增用户信息")
     public AjaxResult insertUser(@RequestBody SysUser user) {
+        user.setPassword(Md5Utils.toHex(Md5Utils.md5(user.getPassword())));
         int num = userService.insertUser(user);
         return AjaxResult.ok();
     }
