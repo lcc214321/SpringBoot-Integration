@@ -1,6 +1,6 @@
 package com.xlhj.rabbit;
 
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version 1.0
  */
 @SpringBootApplication
-@EnableRabbit
+@MapperScan(basePackages = "com.xlhj.*.mapper")
 public class RabbitApplication {
 
     public static void main(String[] args) {
