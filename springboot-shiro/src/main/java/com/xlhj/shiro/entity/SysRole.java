@@ -10,40 +10,27 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author lcj
- * @since 2020-10-01
+ * @Author: lcj
+ * @Date: 2020/10/13 10:04
+ * @Description: 角色表
+ * @Version: 0.0.1
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="SysUser对象", description="用户表")
-public class SysUser implements Serializable {
-
-    private static final long serialVersionUID = -4892850743805515016L;
+@ApiModel(value="SysRole对象", description="角色表")
+public class SysRole implements Serializable {
 
     @ApiModelProperty(value = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "登录名")
-    private String loginName;
+    @ApiModelProperty(value = "角色编号")
+    private String roleCode;
 
-    @ApiModelProperty(value = "用户名")
-    private String userName;
+    @ApiModelProperty(value = "角色名称")
+    private String roleName;
 
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @ApiModelProperty(value = "性别10:男;11:女;12:其他")
-    private Integer sex;
-
-    @ApiModelProperty(value = "头像地址")
-    private String avatar;
-
-    @ApiModelProperty(value = "账号状态10:正常;20:锁定;30:注销")
+    @ApiModelProperty(value = "角色状态10:正常;11:停用")
     private Integer status;
 
     @TableLogic(value = "0", delval = "1")
@@ -66,12 +53,4 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    public boolean isAdmin() {
-        return isAdmin(this.id);
-    }
-
-    public static boolean isAdmin(Long id) {
-        return id != null && 1L == id;
-    }
 }
