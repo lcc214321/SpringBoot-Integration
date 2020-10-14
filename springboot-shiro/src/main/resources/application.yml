@@ -21,9 +21,7 @@ spring:
   thymeleaf:
     mode: HTML
     cache: false
-  mvc:
-    view:
-      prefix: /templates
+    encoding: UTF-8
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
@@ -39,5 +37,4 @@ logging:
 shiro:
   loginUrl: /login
   unauthorizedUrl: /unauth
-  web:
-    enabled: true
+  indexUrl: /index

@@ -12,19 +12,17 @@ import com.xlhj.shiro.entity.SysUser;
 public interface SysUserService extends IService<SysUser> {
 
     /**
-     * 根据登录名和密码查询用户信息
-     * @param loginName
-     * @param password
-     * @return
-     */
-    SysUser selectUserByLoginNameAndPassword(String loginName, String password);
-
-    /**
      * 用户注册
      * @param user
      * @return
      */
     String register(SysUser user);
 
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
     SysUser login(String username, String password);
 }

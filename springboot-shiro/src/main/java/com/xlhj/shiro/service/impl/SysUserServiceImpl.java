@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xlhj.shiro.entity.SysUser;
 import com.xlhj.shiro.mapper.SysUserMapper;
 import com.xlhj.shiro.service.SysUserService;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +22,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserMapper userMapper;
-
-    /**
-     * 根据登录名和密码查询用户信息
-     * @param loginName
-     * @param password
-     * @return
-     */
-    @Override
-    public SysUser selectUserByLoginNameAndPassword(String loginName, String password) {
-        QueryWrapper<SysUser> wrapper = new QueryWrapper<SysUser>();
-        wrapper.eq("login_name", loginName);
-        wrapper.eq("password", password);
-        SysUser user = userMapper.selectOne(wrapper);
-        return user;
-    }
 
     /**
      * 用户注册
@@ -59,5 +46,28 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         }
         return message;
+    }
+
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
+    public SysUser login(String username, String password) {
+        if (StrUtil.isEmpty(username) || StrUtil.isEmpty(password)) {
+            throw new UnknownAccountException();
+        }
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name", username);
+        SysUser user = userMapper.selectOne(wrapper);
+        if (null == user) {
+            throw new UnknownAccountException();
+        }
+        if (user.getStatus() == 20) {
+            throw new LockedAccountException();
+        }
+        return user;
     }
 }

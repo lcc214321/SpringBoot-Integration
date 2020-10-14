@@ -1,27 +1,17 @@
 package com.xlhj.shiro.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.xlhj.shiro.realm.ShiroRealm;
-import com.xlhj.shiro.util.StringUtils;
-import net.sf.ehcache.CacheManager;
-import org.apache.commons.io.IOUtils;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.codec.Base64;
-import org.apache.shiro.io.ResourceUtils;
+import com.xlhj.shiro.realm.UserRealm;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedHashMap;
 
 /**
@@ -34,11 +24,11 @@ import java.util.LinkedHashMap;
 public class ShiroConfig {
 
     /**登录地址*/
-    @Value("${shiro.user.loginUrl}")
+    @Value("${shiro.loginUrl}")
     private String loginUrl;
 
     /**认证失败地址*/
-    @Value("${shiro.user.unauthorizedUrl}")
+    @Value("${shiro.unauthorizedUrl}")
     private String unauthorizedUrl;
 
     /**
@@ -46,21 +36,21 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public ShiroRealm shiroRealm() {
-        ShiroRealm shiroRealm = new ShiroRealm();
-        return shiroRealm;
+    public UserRealm shiroRealm() {
+        UserRealm userRealm = new UserRealm();
+        return userRealm;
     }
 
     /**
      * 配置安全管理器
-     * @param shiroRealm
+     * @param userRealm
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm) {
+    public SessionsSecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //配置realm
-        securityManager.setRealm(shiroRealm);
+        securityManager.setRealm(userRealm);
         return securityManager;
     }
 

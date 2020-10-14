@@ -29,8 +29,8 @@ public class SysLoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public AjaxResult doLogin(String username, String password, Boolean rememberMe) {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+    public AjaxResult doLogin(String username, String password) {
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);

@@ -24,9 +24,9 @@ import java.util.Set;
  * @Description: 自定义Realm
  * @Version: 0.0.1
  */
-public class ShiroRealm extends AuthorizingRealm {
+public class UserRealm extends AuthorizingRealm {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
     private SysUserService userService;
@@ -34,8 +34,6 @@ public class ShiroRealm extends AuthorizingRealm {
     private SysRoleService roleService;
     @Autowired
     private SysMenuService menuService;
-    @Autowired
-    private SysLoginService loginService;
 
     /**
      * 授权

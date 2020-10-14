@@ -2,6 +2,7 @@ package com.xlhj.shiro.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xlhj.shiro.entity.SysRole;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
