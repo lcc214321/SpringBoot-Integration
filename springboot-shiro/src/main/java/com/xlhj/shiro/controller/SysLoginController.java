@@ -6,11 +6,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,23 +19,33 @@ import javax.servlet.http.HttpServletResponse;
  * @Description: 登录
  * @Version: 0.0.1
  */
-@RestController
-@RequestMapping("/shiro")
+@Controller
 public class SysLoginController {
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("msg", "Hello Shiro");
-        return "index";
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        return "login";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @PostMapping("/login")
+    @ResponseBody
+    public AjaxResult doLogin(String username, String password, Boolean rememberMe) {
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            subject.login(token);
+            return AjaxResult.ok();
+        } catch (AuthenticationException e) {
+            String message = "用户名或密码不正确!";
+            if (StrUtil.isNotEmpty(e.getMessage())) {
+                message = e.getMessage();
+            }
+            return AjaxResult.error().message(message);
+        }
     }
 
     @GetMapping("/unauth")
     public String unauth() {
-        return "unauth";
+        return "error/unauth";
     }
 }

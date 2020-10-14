@@ -18,4 +18,13 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     SysUser selectUserByLoginNameAndPassword(String loginName, String password);
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    String register(SysUser user);
+
+    SysUser login(String username, String password);
 }

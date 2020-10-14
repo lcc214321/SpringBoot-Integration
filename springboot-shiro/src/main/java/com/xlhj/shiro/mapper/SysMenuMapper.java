@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
-    List<String> selectPermsByUserId(Long userId);
+    List<SysMenu> selectMenusByUserId(Long userId);
 
+    /**
+     * 根据用户ID查询菜单权限
+     * @param userId
+     * @return
+     */
+    List<String> selectPermsByUserId(Long userId);
 }

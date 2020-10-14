@@ -13,5 +13,10 @@ import java.util.Set;
  */
 public interface SysRoleService extends IService<SysRole> {
 
-    Set<String> selectRoleCodes(Long id);
+    /**
+     * 根据用户ID查询角色信息
+     * @param userId
+     * @return
+     */
+    Set<String> selectRoleCodesByUserId(Long userId);
 }

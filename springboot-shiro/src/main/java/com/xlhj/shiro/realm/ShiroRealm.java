@@ -1,11 +1,9 @@
 package com.xlhj.shiro.realm;
 
 import com.xlhj.shiro.entity.SysUser;
-import com.xlhj.shiro.service.SysLoginService;
 import com.xlhj.shiro.service.SysMenuService;
 import com.xlhj.shiro.service.SysRoleService;
 import com.xlhj.shiro.service.SysUserService;
-import com.xlhj.shiro.util.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -46,27 +44,19 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("授权");
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        logger.info("Shiro授权....");
         Subject subject = SecurityUtils.getSubject();
         SysUser user = (SysUser) subject.getPrincipal();
-        Set<String> menus = menuService.selectPermsByUserId(user.getId());
-        simpleAuthorizationInfo.setStringPermissions(menus);
-        return simpleAuthorizationInfo;
-        /*SysUser user = ShiroUtils.getSysUser();
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        //查询角色信息
         Set<String> roles = new HashSet<String>();
-        Set<String> menus = new HashSet<String>();
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (user.isAdmin()) {
-            info.addRole("admin");
-            info.addStringPermission("*:*:*");
-        } else {
-            roles = roleService.selectRoleCodes(user.getId());
-            menus = menuService.selectPermsByUserId(user.getId());
-            info.setRoles(roles);
-            info.setStringPermissions(menus);
-        }
-        return info;*/
+        //查询菜单权限信息
+        Set<String> perms = new HashSet<String>();
+        roles = roleService.selectRoleCodesByUserId(user.getId());
+        perms = menuService.selectPermsByUserId(user.getId());
+        simpleAuthorizationInfo.setRoles(roles);
+        simpleAuthorizationInfo.setStringPermissions(perms);
+        return simpleAuthorizationInfo;
     }
 
     /**
@@ -77,30 +67,29 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("认证");
+        logger.info("Shiro认证...");
         UsernamePasswordToken userToken = (UsernamePasswordToken) authenticationToken;
-        SysUser user = userService.selectUserByLoginNameAndPassword(userToken.getUsername(), new String(userToken.getPassword()));
-        if (null == user) {
-            throw new UnknownAccountException();
-        }
-        SecurityUtils.getSubject().getSession().setAttribute("currentLoginedUser", user);
-        return new SimpleAuthenticationInfo(user, user.getPassword(), "");
-
-        /*UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        String loginName = token.getUsername();
-        String password = "";
-        if (token.getPassword() != null) {
-            password = new String(token.getPassword());
-        }
+        String username = userToken.getUsername();
+        String password = new String(userToken.getPassword());
         SysUser user = new SysUser();
         try {
-            user = loginService.login(loginName, password);
+            user = userService.login(username, password);
+        } catch (UnknownAccountException e) {//未查询到该账户
+            throw new UnknownAccountException(e.getMessage());
+        } catch (IncorrectCredentialsException e) {//密码不正确
+            throw new IncorrectCredentialsException(e.getMessage());
+        } catch (ExcessiveAttemptsException e) {//登录失败次数过多
+            throw new ExcessiveAttemptsException(e.getMessage());
+        } catch (LockedAccountException e) {//账号被锁定
+            throw new LockedAccountException(e.getMessage());
+        } catch (DisabledAccountException e) {//账号被禁用
+            throw new DisabledAccountException(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("登录验证用户[" + loginName + "]未通过{}", e.getMessage());
+            logger.info("用户[" + username + "]登录验证未通过{}", e.getMessage());
+            throw new AuthenticationException((e.getMessage()));
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-        return info;*/
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, password, getName());
+        return simpleAuthenticationInfo;
     }
 
     /**

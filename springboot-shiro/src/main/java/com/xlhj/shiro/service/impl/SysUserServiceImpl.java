@@ -1,5 +1,6 @@
 package com.xlhj.shiro.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xlhj.shiro.entity.SysUser;
@@ -33,5 +34,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         wrapper.eq("password", password);
         SysUser user = userMapper.selectOne(wrapper);
         return user;
+    }
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    @Override
+    public String register(SysUser user) {
+        String message = "";
+        String username = user.getUserName();
+        String password = user.getPassword();
+        if (StrUtil.isEmpty(username)) {
+            message = "用户名不能为空!";
+        } else if (StrUtil.isEmpty(password)) {
+            message = "用户密码不能为空!";
+        } else {
+            boolean flag = userMapper.insert(user) > 0;
+            if (flag) {
+                message = "用户注册成功!";
+            } else {
+                message = "用户注册失败!";
+            }
+        }
+        return message;
     }
 }

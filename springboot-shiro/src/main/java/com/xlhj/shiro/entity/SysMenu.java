@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: lcj
@@ -67,4 +69,8 @@ public class SysMenu implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "子菜单列表")
+    @TableField(exist = false)
+    private List<SysMenu> children = new ArrayList<SysMenu>();
 }
