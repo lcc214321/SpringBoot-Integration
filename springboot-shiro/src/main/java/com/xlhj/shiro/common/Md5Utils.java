@@ -1,6 +1,6 @@
 package com.xlhj.shiro.common;
 
-import java.security.MessageDigest;
+import org.apache.shiro.crypto.hash.Md5Hash;
 
 /**
  * @ClassName Md5Utils
@@ -11,32 +11,18 @@ import java.security.MessageDigest;
  */
 public class Md5Utils {
 
-    public static byte[] md5(String str) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-            digest.reset();
-            digest.update(str.getBytes("UTF-8"));
-            byte[] messageDigest = digest.digest();
-            return messageDigest;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    /**
+     * shiro密码加密
+     * @param username
+     * @param password
+     * @param salt
+     * @return
+     */
+    public static String encrypt(String username, String password, String salt) {
+        return new Md5Hash(username + password + salt).toHex();
     }
 
-    public static final String toHex(byte hash[]) {
-        if (hash == null) {
-            return null;
-        }
-        StringBuffer sb = new StringBuffer(hash.length * 2);
-        int i;
-        for (int j = 0; j < hash.length; j++) {
-            if ((hash[j] & 0xff) < 0x10) {
-                sb.append("0");
-            }
-            sb.append(Long.toString(hash[j] & 0xff, 16));
-        }
-        return sb.toString();
+    public static void main(String[] args) {
+        System.out.println(encrypt("admin", "123456", "111111"));
     }
 }

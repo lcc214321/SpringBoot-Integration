@@ -6,7 +6,6 @@ import com.xlhj.shiro.mapper.SysRoleMapper;
 import com.xlhj.shiro.mapper.SysRoleMenuMapper;
 import com.xlhj.shiro.mapper.SysUserRoleMapper;
 import com.xlhj.shiro.service.SysRoleService;
-import com.xlhj.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

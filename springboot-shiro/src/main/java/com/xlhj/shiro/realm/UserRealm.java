@@ -10,7 +10,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,10 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("Shiro授权....");
-        Subject subject = SecurityUtils.getSubject();
-        SysUser user = (SysUser) subject.getPrincipal();
+        SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
+        if (user == null) {
+            throw new UnknownAccountException();
+        }
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         //查询角色信息
         Set<String> roles = new HashSet<String>();
@@ -69,24 +71,14 @@ public class UserRealm extends AuthorizingRealm {
         UsernamePasswordToken userToken = (UsernamePasswordToken) authenticationToken;
         String username = userToken.getUsername();
         String password = new String(userToken.getPassword());
-        SysUser user = new SysUser();
-        try {
-            user = userService.login(username, password);
-        } catch (UnknownAccountException e) {//未查询到该账户
-            throw new UnknownAccountException(e.getMessage());
-        } catch (IncorrectCredentialsException e) {//密码不正确
-            throw new IncorrectCredentialsException(e.getMessage());
-        } catch (ExcessiveAttemptsException e) {//登录失败次数过多
-            throw new ExcessiveAttemptsException(e.getMessage());
-        } catch (LockedAccountException e) {//账号被锁定
-            throw new LockedAccountException(e.getMessage());
-        } catch (DisabledAccountException e) {//账号被禁用
-            throw new DisabledAccountException(e.getMessage());
-        } catch (Exception e) {
-            logger.info("用户[" + username + "]登录验证未通过{}", e.getMessage());
-            throw new AuthenticationException((e.getMessage()));
+        SysUser user = userService.login(username);
+        if (user == null) {
+            throw new UnknownAccountException("账户不存在!");
         }
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, password, getName());
+        if (user.getStatus() == 20) {
+            throw new LockedAccountException("账户被锁定!");
+        }
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getUserName(), password, ByteSource.Util.bytes(user.getSalt()), getName());
         return simpleAuthenticationInfo;
     }
 

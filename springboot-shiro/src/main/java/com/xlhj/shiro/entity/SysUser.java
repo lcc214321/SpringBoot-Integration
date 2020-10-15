@@ -28,14 +28,17 @@ public class SysUser implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "登录名")
-    private String loginName;
-
     @ApiModelProperty(value = "用户名")
     private String userName;
 
+    @ApiModelProperty(value = "真实名称")
+    private String realName;
+
     @ApiModelProperty(value = "密码")
     private String password;
+
+    @ApiModelProperty(value = "盐加密")
+    private String salt;
 
     @ApiModelProperty(value = "性别10:男;11:女;12:其他")
     private Integer sex;

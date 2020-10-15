@@ -5,9 +5,9 @@ spring:
     name: springboot-shiro
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.108.11:3306/springboot?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/springboot?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: root
+    password: qaz123456
     hikari:
       minimum-idle: 10 #最小空闲连接，默认10
       maximum-pool-size: 20 #最大连接数
@@ -18,10 +18,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  thymeleaf:
-    mode: HTML
-    cache: false
-    encoding: UTF-8
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
@@ -33,8 +29,3 @@ logging:
   config: classpath:logback-spring.xml
   level:
     com.xlhj.shiro: debug
-
-shiro:
-  loginUrl: /login
-  unauthorizedUrl: /unauth
-  indexUrl: /index

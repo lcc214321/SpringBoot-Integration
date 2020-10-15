@@ -1,16 +1,14 @@
 package com.xlhj.shiro.service.impl;
 
+
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xlhj.shiro.entity.SysMenu;
 import com.xlhj.shiro.entity.SysUser;
 import com.xlhj.shiro.mapper.SysMenuMapper;
 import com.xlhj.shiro.mapper.SysRoleMenuMapper;
 import com.xlhj.shiro.service.SysMenuService;
-import com.xlhj.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
