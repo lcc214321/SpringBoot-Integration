@@ -14,9 +14,11 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -25,14 +27,68 @@ import java.util.List;
  * @Description: TODO
  * @Version: 0.0.1
  */
-@RestController
-@RequestMapping("/shiro")
+@Controller
+@RequestMapping("/user")
 public class SysUserController {
 
     private static Logger logger = LoggerFactory.getLogger(SysUserController.class);
 
     @Autowired
+    public HttpServletRequest request;
+
+    @Autowired
     private SysUserService userService;
+
+    /**
+     * 查询用户
+     * @return
+     */
+    @RequestMapping("/searchUser")
+    @RequiresPermissions("system:user:list")
+    public String searchUser() {
+        request.setAttribute("message", "查询用户");
+        return "user.html";
+    }
+
+    /**
+     * 修改用户
+     * @return
+     */
+    @RequestMapping("/editUser")
+    @RequiresPermissions("system:user:edit")
+    public String editUser() {
+        request.setAttribute("message", "修改用户");
+        return "user.html";
+    }
+
+    /**
+     * 删除用户
+     * @return
+     */
+    @RequestMapping("/deleteUser")
+    @RequiresPermissions("system:user:remove")
+    public String deleteUser() {
+        request.setAttribute("message", "删除用户");
+        return "user.html";
+    }
+
+    @RequestMapping("/unauthUser")
+    @RequiresPermissions("system:user:unauth")
+    public String unauthUser() {
+        request.setAttribute("message", "无权限");
+        return "user.html";
+    }
+
+    /**
+     * 修改用户
+     * @return
+     */
+    /*@RequestMapping("/addUser")
+    @RequiresPermissions("system:user:add")
+    public String addUser() {
+        request.setAttribute("message", "新增用户");
+        return "user.html";
+    }*/
 
     /**
      * 用户登录
@@ -40,7 +96,7 @@ public class SysUserController {
      * @param password
      * @return
      */
-    @GetMapping("/login/{username}/{password}")
+    /*@GetMapping("/login/{username}/{password}")
     @ApiOperation(value = "用户登录")
     public AjaxResult login(@PathVariable String username, @PathVariable String password) {
         Subject subject = SecurityUtils.getSubject();
@@ -56,13 +112,13 @@ public class SysUserController {
             logger.info("用户登录失败!");
             return AjaxResult.error().message("密码不正确!");
         }
-    }
+    }*/
 
     /**
      * 查询用户信息
      * @return
      */
-    @PostMapping("/selectUserList")
+    /*@PostMapping("/selectUserList")
     @ApiOperation(value = "查询用户信息")
     @RequiresPermissions("system:user:list")
     public AjaxResult selectUserList() {
@@ -72,5 +128,5 @@ public class SysUserController {
         } else {
             return AjaxResult.error();
         }
-    }
+    }*/
 }

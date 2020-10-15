@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <style>
+        .txtBox{
+            padding: 3px;
+            width: 250px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div align="center">请输入登录信息
+        <form name="shiroForm" method="post" action="/login" onsubmit="submitLogin()">
+            <table>
+                <tr>
+                    <td>用户姓名:</td>
+                    <td><input type="text" name="username" class="txtBox" value="admin"/></td>
+                </tr>
+                <tr>
+                    <td>登录密码:</td>
+                    <td><input type="password" name="password" class="txtBox" value="123456"/></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="登录"/>
+                    </td>
+                    <td>
+                        <input type="reset" value="取消"/>
+                    </td>
+                </tr>
+            </table>
+            <p style="color: red" th:text="${message}"></p>
+        </form>
+    </div>
+</body>
+<script>
+    function submitLogin() {
+        if (!shiroForm.username.value) {
+            alert("请输入用户姓名!");
+            shiroForm.username.focus();
+            return false;
+        }
+        if (!shiroForm.password.value) {
+            alert("请输入登录密码!");
+            shiroForm.password.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>

@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -68,24 +69,24 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         logger.info("Shiro认证...");
-        UsernamePasswordToken userToken = (UsernamePasswordToken) authenticationToken;
-        String username = userToken.getUsername();
-        String password = new String(userToken.getPassword());
+        String username = (String) authenticationToken.getPrincipal();
+        if (username == null) {
+            throw new UnknownAccountException("账户不存在!");
+        }
         SysUser user = userService.login(username);
         if (user == null) {
             throw new UnknownAccountException("账户不存在!");
         }
         if (user.getStatus() == 20) {
-            throw new LockedAccountException("账户被锁定!");
+            throw new LockedAccountException("账户已锁定!");
         }
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getUserName(), password, ByteSource.Util.bytes(user.getSalt()), getName());
-        return simpleAuthenticationInfo;
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
+        return authenticationInfo;
     }
 
-    /**
-     * 清理缓存权限
-     */
-    public void clearCachedAuthorizationInfo() {
-        this.clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+    public static void main(String[] args) {
+        SimpleHash simpleHash = new SimpleHash("MD5", "123456", "111111", 2);
+        String encrypt = simpleHash.toString();
+        System.out.println(encrypt);
     }
 }
