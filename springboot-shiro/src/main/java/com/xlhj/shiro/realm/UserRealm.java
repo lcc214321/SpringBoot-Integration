@@ -1,6 +1,8 @@
 package com.xlhj.shiro.realm;
 
 import com.xlhj.shiro.entity.SysUser;
+import com.xlhj.shiro.exception.UserBlockedException;
+import com.xlhj.shiro.exception.UserNotExistsException;
 import com.xlhj.shiro.service.SysMenuService;
 import com.xlhj.shiro.service.SysRoleService;
 import com.xlhj.shiro.service.SysUserService;
@@ -8,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -45,19 +48,21 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("Shiro授权....");
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
-        if (user == null) {
-            throw new UnknownAccountException();
-        }
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //查询角色信息
         Set<String> roles = new HashSet<String>();
         //查询菜单权限信息
         Set<String> perms = new HashSet<String>();
-        roles = roleService.selectRoleCodesByUserId(user.getId());
-        perms = menuService.selectPermsByUserId(user.getId());
-        simpleAuthorizationInfo.setRoles(roles);
-        simpleAuthorizationInfo.setStringPermissions(perms);
-        return simpleAuthorizationInfo;
+        if (user.isAdmin()) {
+            authorizationInfo.addRole("admin");
+            authorizationInfo.addStringPermission("*:*:*");
+        } else {
+            roles = roleService.selectRoleCodesByUserId(user.getId());
+            perms = menuService.selectPermsByUserId(user.getId());
+            authorizationInfo.setRoles(roles);
+            authorizationInfo.setStringPermissions(perms);
+        }
+        return authorizationInfo;
     }
 
     /**
@@ -69,16 +74,18 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         logger.info("Shiro认证...");
-        String username = (String) authenticationToken.getPrincipal();
-        if (username == null) {
-            throw new UnknownAccountException("账户不存在!");
-        }
-        SysUser user = userService.login(username);
-        if (user == null) {
-            throw new UnknownAccountException("账户不存在!");
-        }
-        if (user.getStatus() == 20) {
-            throw new LockedAccountException("账户已锁定!");
+        UsernamePasswordToken userToken = (UsernamePasswordToken) authenticationToken;
+        String username = userToken.getUsername();
+        SysUser user = null;
+        try {
+            user = userService.login(username);
+        } catch (UserNotExistsException e) {
+            throw new UnknownAccountException(e.getMessage(), e);
+        } catch (UserBlockedException e) {
+            throw new LockedAccountException(e.getMessage(), e);
+        } catch (Exception e) {
+            logger.warn("验证用户[" + username + "]未通过!");
+            throw new AuthenticationException(e.getMessage(), e);
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
         return authenticationInfo;

@@ -3,54 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-        table,table tr th, table tr td {
-            border: 1px solid #000000;
-            padding: 5px 10px;
-            a {
-                margin-right: 10px;
-            }
-        }
-    </style>
+    <script src="../static/js/jquery.min.js" th:src="@{/jquery.min.js}"></script>
 </head>
 <body>
-    <div align="center">
-        <table>
-            <caption>当前登录人信息</caption>
-            <tr>
-                <th>用户ID：</th>
-                <td th:text="${currentUser.id}"></td>
-            </tr>
-            <tr>
-                <th>用户名：</th>
-                <td th:text="${currentUser.userName}"></td>
-            </tr>
-            <tr>
-                <th>注销操作：</th>
-                <td>
-                    <a href="logout" onclick="return confirm('确认注销吗?')">注销</a>
-                </td>
-            </tr>
-            <tr>
-                <th>授权测试：</th>
-                <td>
-                    <a href="/user/searchUser">查询用户</a>
-                    <a href="/user/addUser">新增用户</a>
-                    <a href="/user/editUser">修改用户</a>
-                    <a href="/user/deleteUser">删除用户</a>
-                </td>
-            </tr>
-            <tr>
-                <th>无权限测试：</th>
-                <td>
-                    <a href="/user/unauthUser">无权限</a>
-                </td>
-            </tr>
-        </table>
+    <h2>欢迎来到首页</h2>
+    <div>
+        <a th:href="user/add">添加用户</a>
+        <a th:href="user/update">修改用户</a>
     </div>
 </body>
 </html>

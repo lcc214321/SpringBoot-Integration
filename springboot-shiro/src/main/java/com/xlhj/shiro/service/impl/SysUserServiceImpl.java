@@ -3,6 +3,8 @@ package com.xlhj.shiro.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xlhj.shiro.entity.SysUser;
+import com.xlhj.shiro.exception.UserBlockedException;
+import com.xlhj.shiro.exception.UserNotExistsException;
 import com.xlhj.shiro.mapper.SysUserMapper;
 import com.xlhj.shiro.service.SysUserService;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -21,8 +23,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysUserMapper userMapper;
 
-
-
     /**
      * 用户登录
      * @param username
@@ -33,6 +33,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name", username);
         SysUser user = userMapper.selectOne(wrapper);
+        if (user == null) {
+            throw new UserNotExistsException();
+        }
+        if (user.getStatus() == 20) {
+            throw new UserBlockedException();
+        }
         return user;
     }
 }

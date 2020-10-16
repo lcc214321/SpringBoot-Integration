@@ -1,16 +1,20 @@
 package com.xlhj.shiro.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.xlhj.shiro.common.AjaxResult;
-import io.swagger.annotations.ApiOperation;
+import com.xlhj.shiro.exception.UserNotExistsException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.aspectj.weaver.loadtime.Aj;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ClassName LoginController
@@ -19,45 +23,34 @@ import javax.servlet.http.HttpServletRequest;
  * @Date 2020/10/15 20:55
  * @Version 1.0
  */
-@RestController
-@RequestMapping
+@Controller
 public class LoginController {
 
-    @Autowired
-    public HttpServletRequest request;
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @GetMapping("/login/{username}/{password}")
-    @ApiOperation(value = "用户登录")
-    public AjaxResult login(@PathVariable String username, @PathVariable String password) {
-        if (username == null || password == null) {
-            return AjaxResult.error().message("用户不存在!");
-        }
-        AuthenticationToken token = new UsernamePasswordToken(username, password);
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        return "login";
+    }
+
+    @RequestMapping("/login")
+    @ResponseBody
+    public AjaxResult login(String username, String password) {
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            return AjaxResult.ok().message("登录成功");
+            logger.info("登录成功!");
+            return AjaxResult.ok().message("登录成功!");
+        } catch (UnknownAccountException e) {
+            return AjaxResult.error().message("用户名或密码不正确!");
         } catch (IncorrectCredentialsException e) {
             return AjaxResult.error().message("用户名或密码不正确!");
-        } catch (UnknownAccountException e) {
-            return AjaxResult.error().message("账户不存在!");
-        } catch (LockedAccountException e) {
-            return AjaxResult.error().message("账户被锁定!");
-        } catch (DisabledAccountException e) {
-            return AjaxResult.error().message("账户被禁用!");
-        } catch (ExcessiveAttemptsException e) {
-            return AjaxResult.error().message("用户名或密码错误次数太多!");
-        } catch (AuthenticationException e) {
-            return AjaxResult.error().message("验证未通过!");
-        } catch (Exception e) {
-            return AjaxResult.error().message("验证未通过!");
         }
     }
 
-    @RequestMapping("/logout")
-    public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        return "redirect:/toLoginView";
+    @GetMapping("/unauth")
+    public String unauth() {
+        return "unauth";
     }
 }
