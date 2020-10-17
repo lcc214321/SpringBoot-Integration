@@ -6,11 +6,9 @@ import com.xlhj.shiro.exception.UserNotExistsException;
 import com.xlhj.shiro.service.SysMenuService;
 import com.xlhj.shiro.service.SysRoleService;
 import com.xlhj.shiro.service.SysUserService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -53,15 +51,10 @@ public class UserRealm extends AuthorizingRealm {
         Set<String> roles = new HashSet<String>();
         //查询菜单权限信息
         Set<String> perms = new HashSet<String>();
-        if (user.isAdmin()) {
-            authorizationInfo.addRole("admin");
-            authorizationInfo.addStringPermission("*:*:*");
-        } else {
-            roles = roleService.selectRoleCodesByUserId(user.getId());
-            perms = menuService.selectPermsByUserId(user.getId());
-            authorizationInfo.setRoles(roles);
-            authorizationInfo.setStringPermissions(perms);
-        }
+        roles = roleService.selectRoleCodesByUserId(user.getId());
+        perms = menuService.selectPermsByUserId(user.getId());
+        authorizationInfo.setRoles(roles);
+        authorizationInfo.setStringPermissions(perms);
         return authorizationInfo;
     }
 

@@ -32,4 +32,10 @@ public class IndexController {
         model.put("user", user);
         return "index";
     }
+
+    @GetMapping("/system/main")
+    public String main(ModelMap modelMap) {
+        modelMap.put("welcome", "欢迎光临!");
+        return "main";
+    }
 }

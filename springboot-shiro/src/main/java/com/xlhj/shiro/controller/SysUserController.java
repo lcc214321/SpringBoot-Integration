@@ -1,5 +1,6 @@
 package com.xlhj.shiro.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.xlhj.shiro.common.AjaxResult;
 import com.xlhj.shiro.entity.SysUser;
 import com.xlhj.shiro.service.SysUserService;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,7 @@ import java.util.List;
  * @Version: 0.0.1
  */
 @Controller
-@RequestMapping("/system/user")
+@RequestMapping("/user")
 public class SysUserController {
 
     private static Logger logger = LoggerFactory.getLogger(SysUserController.class);
@@ -36,9 +38,32 @@ public class SysUserController {
     @Autowired
     private SysUserService userService;
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("system:user:list")
-    public AjaxResult selectUserList() {
-        return AjaxResult.ok().message("查询用户列表");
+    public String list(ModelMap modelMap) {
+        List<SysUser> userList = userService.list(null);
+        modelMap.addAttribute("userList", userList);
+        modelMap.addAttribute("message", "查询用户信息");
+        return "/user/list";
+    }
+
+    @GetMapping("/add")
+    @RequiresPermissions("system:user:add")
+    public String add(ModelMap modelMap) {
+        modelMap.addAttribute("message", "新增用户信息");
+        return "/user/add";
+    }
+
+    @GetMapping("/edit")
+    @RequiresPermissions("system:user:edit")
+    public String edit(ModelMap modelMap) {
+        modelMap.addAttribute("message", "修改用户信息");
+        return "/user/edit";
+    }
+
+    @GetMapping("/unauth")
+    @RequiresPermissions("system:role:unauth")
+    public String testUnauth() {
+        return "权限测试";
     }
 }
