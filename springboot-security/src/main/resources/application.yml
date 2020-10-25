@@ -19,18 +19,3 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  thymeleaf:
-    mode: HTML5
-    encoding: UTF-8
-    cache: false
-
-mybatis-plus:
-  mapper-locations: classpath:mapper/**/*Mapper.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-aliases-package: com.xlhj.security.entity
-
-logging:
-  config: classpath:logback-spring.xml
-  level:
-    com.xlhj.security: debug

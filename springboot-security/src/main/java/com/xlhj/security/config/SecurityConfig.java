@@ -1,74 +1,85 @@
 package com.xlhj.security.config;
 
-import com.xlhj.security.filter.JwtAuthenticationTokenFilter;
-import com.xlhj.security.handler.SecurityLogoutSuccessHandler;
-import com.xlhj.security.handler.UnauthorizedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * @ClassName SecurityConfig
- * @Description springSecurity配置类
+ * @Description TODO
  * @Author liucaijing
- * @Date 2020/10/17 19:59
+ * @Date 2020/10/25 16:46
  * @Version 1.0
  */
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private UnauthorizedHandler unauthorizedHandler;
-    @Autowired
-    private SecurityLogoutSuccessHandler logoutSuccessHandler;
-    @Autowired
-    private JwtAuthenticationTokenFilter authenticationTokenFilter;
-
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/login").anonymous()
-                .antMatchers(HttpMethod.GET, "/*.html", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/swagger-ui").anonymous()
-                .antMatchers("/swagger-resources/**").anonymous()
-                .antMatchers("/webjars/**").anonymous()
-                .antMatchers("/*/api-docs").anonymous()
-                .anyRequest().authenticated().and().headers().frameOptions().disable();
-        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
-        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+    private DataSource dataSource;
 
     /**
-     * 强散列哈希加密实现
+     * 配置记住我
      * @return
      */
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        //jdbcTokenRepository.setCreateTableOnStartup(true); //请求时创建表
+        return jdbcTokenRepository;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        //退出
+        http.logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll();
+        //配置没有权限访问跳转自定义页面
+        http.exceptionHandling().accessDeniedPage("/uanuth.html");
+        http.formLogin() //自定义登录页面
+                .loginPage("/login.html") //登录页面
+                .loginProcessingUrl("/login") //登录访问路径
+                //.defaultSuccessUrl("/index").permitAll() //登录成功后访问路径
+                .defaultSuccessUrl("/success.html").permitAll()
+                .and().authorizeRequests()
+                .antMatchers("/", "/test/hello", "/login").permitAll() //设置哪些路径可以直接访问，不需要认证
+                //.antMatchers("/index").hasAuthority("admin")
+                //.antMatchers("/index").hasAnyAuthority("admin,manager")
+                .antMatchers("/index").hasRole("sale")
+                .anyRequest().authenticated()
+                .and().rememberMe().tokenRepository(persistentTokenRepository())//配置记住我
+                .tokenValiditySeconds(60)//配置记住我时长(秒)
+                .userDetailsService(userDetailsService)
+                .and().csrf().disable(); //关闭csrf防护
     }
 
     /**
-     * 身份认证接口
+     * 配置用户名和密码
      * @param auth
      * @throws Exception
      */
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        /*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode("123456");
+        auth.inMemoryAuthentication().withUser("zhangsan").password(password).roles("admin");*/
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
     }
 
+    @Bean
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
