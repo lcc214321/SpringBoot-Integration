@@ -60,10 +60,4 @@ public class SysUserController {
         modelMap.addAttribute("message", "修改用户信息");
         return "/user/edit";
     }
-
-    @GetMapping("/unauth")
-    @RequiresPermissions("system:role:unauth")
-    public String testUnauth() {
-        return "权限测试";
-    }
 }

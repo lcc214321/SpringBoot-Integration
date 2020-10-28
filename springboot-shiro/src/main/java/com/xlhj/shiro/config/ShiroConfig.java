@@ -64,7 +64,7 @@ public class ShiroConfig {
         //过滤静态页面
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         //过滤swagger API接口页面
         filterChainDefinitionMap.put("/swagger-ui", "anon");

@@ -18,6 +18,6 @@ public class PermissionException {
     @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
     public String handleShiroException(Exception e) {
-        return "unauth";
+        return "您没有权限访问!";
     }
 }
