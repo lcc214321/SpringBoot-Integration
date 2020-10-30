@@ -3,7 +3,6 @@ CREATE TABLE `sys_user` (
   `user_name` varchar(50) NOT NULL COMMENT '用户名',
   `real_name` varchar(20) NOT NULL COMMENT '真实名称',
   `password` varchar(64) NOT NULL COMMENT '密码',
-  `salt` varchar(20) NOT NULL COMMENT '加密盐',
   `sex` tinyint(2) NOT NULL DEFAULT '10' COMMENT '性别10:男;11:女;12:其他',
   `avatar` varchar(100) DEFAULT NULL COMMENT '头像路径',
   `status` tinyint(2) NOT NULL DEFAULT '10' COMMENT '状态10:正常;11:锁定;12:注销',
@@ -15,8 +14,8 @@ CREATE TABLE `sys_user` (
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
-INSERT INTO sys_user (user_name,real_name,password,salt,sex,avatar,status,del_flag,create_by,create_time,update_by,update_time,remark) VALUES
-('admin','超级管理员','$2a$10$j3XmUHGzMFLZFH.Qioq4Z.nM/iFMd4Wk6GDI.mC7U2yIztdyV6oUe','111111',10,'',10,0,'admin','2020-09-30 08:34:18.0','admin','2020-09-30 08:34:18.0','')
+INSERT INTO sys_user (user_name,real_name,password,sex,avatar,status,del_flag,create_by,create_time,update_by,update_time,remark) VALUES
+('admin','超级管理员','$2a$10$j3XmUHGzMFLZFH.Qioq4Z.nM/iFMd4Wk6GDI.mC7U2yIztdyV6oUe',10,'',10,0,'admin','2020-09-30 08:34:18.0','admin','2020-09-30 08:34:18.0','')
 CREATE TABLE `sys_role` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `role_code` varchar(20) NOT NULL COMMENT '角色编号',

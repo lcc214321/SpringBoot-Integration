@@ -57,6 +57,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authStr);
-        return new User(currentUser.getUserName(), currentUser.getPassword(), true, true, true, true, authorityList);
+        return new User(currentUser.getUserName(), currentUser.getPassword(), authorityList);
     }
 }

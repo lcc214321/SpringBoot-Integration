@@ -5,7 +5,6 @@ import com.xlhj.security.handler.SecurityAccessDeniedHandler;
 import com.xlhj.security.handler.SecurityAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +25,6 @@ import javax.sql.DataSource;
  * @Date 2020/10/25 16:46
  * @Version 1.0
  */
-//@Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -100,26 +98,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 //退出后跳转页面
                 .logoutSuccessUrl("/login.html");
-
-        /*//退出
-        http.logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll();
-        //配置没有权限访问跳转自定义页面
-        http.exceptionHandling().accessDeniedPage("/uanuth.html");
-        http.formLogin() //自定义登录页面
-                .loginPage("/login.html") //登录页面
-                .loginProcessingUrl("/login") //登录访问路径
-                //.defaultSuccessUrl("/index").permitAll() //登录成功后访问路径
-                .defaultSuccessUrl("/index.html").permitAll()
-                .and().authorizeRequests()
-                .antMatchers("/", "/test/hello", "/login").permitAll() //设置哪些路径可以直接访问，不需要认证
-                //.antMatchers("/index").hasAuthority("admin")
-                //.antMatchers("/index").hasAnyAuthority("admin,manager")
-                .antMatchers("/index").hasRole("sale")
-                .anyRequest().authenticated()
-                .and().rememberMe().tokenRepository(persistentTokenRepository())//配置记住我
-                .tokenValiditySeconds(60)//配置记住我时长(秒)
-                .userDetailsService(userDetailsService)
-                .and().csrf().disable(); //关闭csrf防护*/
     }
 
     /**
