@@ -1,5 +1,6 @@
 package com.xlhj.securityjwt;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version: 0.0.1
  */
 @SpringBootApplication
+@MapperScan(basePackages = "com.xlhj.*.mapper")
 public class SecurityJwtApplication {
 
     public static void main(String[] args) {
