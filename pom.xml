@@ -16,6 +16,7 @@
         <module>springboot-shiro</module>
         <module>springboot-security</module>
         <module>springboot-security-jwt</module>
+        <module>springboot-sharding-JDBC</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
