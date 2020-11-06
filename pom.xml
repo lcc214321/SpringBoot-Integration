@@ -18,6 +18,27 @@
         <module>springboot-security-jwt</module>
         <module>springboot-sharding-JDBC</module>
         <module>springboot-xxl-job</module>
+        <module>springboot-xxl-job-admin</module>
+        <module>springboot-quartz</module>
+        <module>springboot-websocket</module>
+        <module>springboot-activemq</module>
+        <module>springboot-rocketmq</module>
+        <module>springboot-kafka</module>
+        <module>springboot-elastic-job</module>
+        <module>springboot-fastDFS</module>
+        <module>springboot-auth2</module>
+        <module>springboot-netty</module>
+        <module>springboot-dubbo</module>
+        <module>springboot-jpa</module>
+        <module>springboot-mongodb</module>
+        <module>springboot-actuator</module>
+        <module>springboot-email</module>
+        <module>springboot-easy-excel</module>
+        <module>springboot-thymeleaf</module>
+        <module>springboot-freemarker</module>
+        <module>springboot-velocity</module>
+        <module>springboot-jdbc</module>
+        <module>springboot-batch</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

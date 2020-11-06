@@ -1,0 +1,15 @@
+server:
+  port: 8108
+spring:
+  application:
+    name: springboot-email
+  mail:
+    username: 573367390@qq.com
+    password: mwhlqroeiianbbgc
+    host: smtp.qq.com
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+          auth: true
