@@ -18,7 +18,6 @@
         <module>springboot-security-jwt</module>
         <module>springboot-sharding-JDBC</module>
         <module>springboot-xxl-job</module>
-        <module>springboot-xxl-job-admin</module>
         <module>springboot-quartz</module>
         <module>springboot-websocket</module>
         <module>springboot-activemq</module>
