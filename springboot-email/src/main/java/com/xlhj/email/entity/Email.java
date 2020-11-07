@@ -22,4 +22,7 @@ public class Email {
 
     /**附件路径*/
     private String filePath;
+
+    /**模板名称*/
+    private String template;
 }

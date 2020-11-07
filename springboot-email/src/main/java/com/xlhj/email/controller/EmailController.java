@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @Author: lcj
  * @Date: 2020/11/6 14:45
- * @Description: TODO
+ * @Description: 测试邮件发送
  * @Version: 0.0.1
  */
 @RestController
@@ -25,8 +25,12 @@ public class EmailController {
      */
     @PostMapping("/sendSimpleMail")
     public ResultData sendSimpleMail(@RequestBody Email email) {
-        emailService.sendSimpleMail(email.getMail(), email.getSubject(), email.getText());
-        return ResultData.ok().message("邮件发送成功!");
+        boolean flag = emailService.sendSimpleMail(email.getMail(), email.getSubject(), email.getText());
+        if (flag) {
+            return ResultData.ok().message("邮件发送成功!");
+        } else {
+            return ResultData.error().message("邮件发送失败!");
+        }
     }
 
     /**
@@ -35,8 +39,12 @@ public class EmailController {
      */
     @PostMapping("/sendSimpleMailForJava")
     public ResultData sendSimpleMailForJava(@RequestBody Email email) {
-        emailService.sendSimpleMailForJava(email.getMail(), email.getSubject(), email.getText());
-        return ResultData.ok().message("邮件发送成功!");
+        boolean flag = emailService.sendSimpleMailForJava(email.getMail(), email.getSubject(), email.getText());
+        if (flag) {
+            return ResultData.ok().message("邮件发送成功!");
+        } else {
+            return ResultData.error().message("邮件发送失败!");
+        }
     }
 
     /**
@@ -45,8 +53,12 @@ public class EmailController {
      */
     @PostMapping("/sendSimpleMailForJavaAndHelper")
     public ResultData sendSimpleMailForJavaAndHelper(@RequestBody Email email) {
-        emailService.sendSimpleMailForJavaAndHelper(email.getMail(), email.getSubject(), email.getText());
-        return ResultData.ok().message("邮件发送成功!");
+        boolean flag = emailService.sendSimpleMailForJavaAndHelper(email.getMail(), email.getSubject(), email.getText());
+        if (flag) {
+            return ResultData.ok().message("邮件发送成功!");
+        } else {
+            return ResultData.error().message("邮件发送失败!");
+        }
     }
 
     /**
@@ -58,9 +70,54 @@ public class EmailController {
     public ResultData sendAttachmentMail(@RequestBody Email email) {
         boolean flag = emailService.sendAttachmentMail(email.getMail(), email.getSubject(), email.getText(), email.getFilePath());
         if (flag) {
-            return ResultData.ok().message("邮件发送成功!");
+            return ResultData.ok().message("发送带附件邮件成功!");
         } else {
-            return ResultData.ok().message("邮件发送失败!");
+            return ResultData.error().message("发送带附件邮件失败!");
+        }
+    }
+
+    /**
+     * 发送html图片邮件
+     * @param email
+     * @return
+     */
+    @PostMapping("/sendHtmlPictureMail")
+    public ResultData sendHtmlPictureMail(@RequestBody Email email) {
+        boolean flag = emailService.sendHtmlPictureMail(email.getMail(), email.getSubject(), email.getText(), email.getFilePath());
+        if (flag) {
+            return ResultData.ok().message("发送HTML图片邮件成功!");
+        } else {
+            return ResultData.error().message("发送HTML图片邮件失败!");
+        }
+    }
+
+    /**
+     * 发送html邮件
+     * @param email
+     * @return
+     */
+    @PostMapping("/sendHtmlMail")
+    public ResultData sendHtmlMail(@RequestBody Email email) {
+        boolean flag = emailService.sendHtmlMail(email.getMail(), email.getSubject(), email.getText());
+        if (flag) {
+            return ResultData.ok().message("发送HTML邮件成功!");
+        } else {
+            return ResultData.error().message("发送HTML邮件失败!");
+        }
+    }
+
+    /**
+     * 发送html模板邮件
+     * @param email
+     * @return
+     */
+    @PostMapping("/sendTemplateMail")
+    public ResultData sendTemplateMail(@RequestBody Email email) {
+        boolean flag = emailService.sendTemplateMail(email.getMail(), email.getSubject(), email.getTemplate());
+        if (flag) {
+            return ResultData.ok().message("发送模板邮件成功!");
+        } else {
+            return ResultData.error().message("发送模板邮件失败!");
         }
     }
 }

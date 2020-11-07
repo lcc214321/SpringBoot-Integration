@@ -4,12 +4,24 @@ spring:
   application:
     name: springboot-email
   mail:
-    username: 573367390@qq.com
-    password: mwhlqroeiianbbgc
-    host: smtp.qq.com
+    username: xxxxxx@qq.com #邮箱
+    password: xxxxxx #授权码
+    host: smtp.qq.com #邮箱类型
+    protocol: smtp #发送邮件协议
+    default-encoding: UTF-8
     properties:
       mail:
         smtp:
           ssl:
-            enable: true
+            enable: true #开启SSL
           auth: true
+          port: 465
+          starttls:
+            enable: true
+            required: true
+
+freemarker:
+  cache: false #关闭缓存
+  suffix: .html #模板后缀 默认ftl
+  charset: UTF-8 #文件编码
+  template-loader-path: classpath:/templates/ #模板文件存放路径
