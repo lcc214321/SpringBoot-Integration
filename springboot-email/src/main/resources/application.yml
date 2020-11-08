@@ -4,8 +4,8 @@ spring:
   application:
     name: springboot-email
   mail:
-    username: xxxxxx@qq.com #邮箱
-    password: xxxxxx #授权码
+    username: 573367390@qq.com #邮箱
+    password: mwhlqroeiianbbgc #授权码
     host: smtp.qq.com #邮箱类型
     protocol: smtp #发送邮件协议
     default-encoding: UTF-8
