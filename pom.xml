@@ -38,6 +38,7 @@
         <module>springboot-velocity</module>
         <module>springboot-jdbc</module>
         <module>springboot-batch</module>
+        <module>springboot-zookeeper</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
