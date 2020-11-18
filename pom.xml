@@ -24,7 +24,7 @@
         <module>springboot-rocketmq</module>
         <module>springboot-kafka</module>
         <module>springboot-elastic-job</module>
-        <module>springboot-fastDFS</module>
+        <module>springboot-fastdfs</module>
         <module>springboot-auth2</module>
         <module>springboot-netty</module>
         <module>springboot-dubbo</module>
