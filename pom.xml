@@ -39,6 +39,7 @@
         <module>springboot-batch</module>
         <module>springboot-zookeeper</module>
         <module>springboot-aliyun-oss</module>
+        <module>springboot-fastdfs</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
